@@ -1,0 +1,55 @@
+class Solution {
+private:
+    int solve(int i,int j,string &a,string &b,vector<vector<int>> &dp)
+    {
+        if(i==a.size())
+        {
+            int sum = 0;
+
+            while(j<b.size())
+            {
+                int val = b[j];
+
+                // cout<<val<<" ";
+
+                sum+=val;
+
+                j++;
+            }
+
+            return sum;
+        }
+
+        if(j==b.size())
+        {
+            int sum = 0;
+
+            while(i<a.size())
+            {
+                int val = a[i];
+
+                sum+=val;
+
+                i++;
+            }
+
+            return sum;
+        }
+
+        if(dp[i][j]!=-1) return dp[i][j];
+
+        if(a[i]==b[j]) return solve(i+1,j+1,a,b,dp);
+
+        int pick = a[i] + solve(i+1,j,a,b,dp);
+        int nonPick = b[j] + solve(i,j+1,a,b,dp);
+
+        return dp[i][j] = min(pick,nonPick);
+    }
+public:
+    int minimumDeleteSum(string s1, string s2) {
+        
+        vector<vector<int>> dp(s1.size(),vector<int>(s2.size()+1,-1));
+
+        return solve(0,0,s1,s2,dp);
+    }
+};
